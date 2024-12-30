@@ -68,4 +68,4 @@ This project aims to address the growing threat of deepfake videos by developing
    ```bash
    python app.py
    ```  
-
+---
