@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="bg" id="dynamic-bg" style="background-image: url('{% static 'images/new2.jpg' %}'); 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover; 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    background-color: rgba(186, 119, 68, 0.53);">
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 my-auto py-5">
+                <div class="logo text-center mb-3">
+                    <img src="{% static 'images/logo3.png'%}" alt="Logo" style="height: 300px; width: auto;">
+                </div>
+                <div class="width-400">
+                    <video width="100%" controls id="videos" class="mb-4 rounded glass-effect">
+                        <source src="" id="video_source">
+                        Your browser does not support HTML5 video.
+                    </video>
+                    
+                    <form class="form" method="POST" enctype="multipart/form-data" name="video-upload" id="video-upload">
+                        {% csrf_token %}
+                        <div class="form-group mb-4">
+                            <div class="custom-file-upload">
+                                <label class="file-upload-label glass-effect">
+                                    <i class="fas fa-cloud-upload-alt me-2"></i>
+                                    <span>Choose Video File</span>
+                                    {{form.upload_video_file}}
+                                </label>
+                                <div id="file-name-display" class="mt-2 text-center text-white"></div>
+                            </div>
+                            {% if form.upload_video_file.errors %}
+                                {% for each_error in form.upload_video_file.errors %}
+                                <div class="alert alert-danger mt-2 {{form.upload_video_file.id_for_label}}">
+                                    {{each_error}}
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <div class="btn-group w-100" role="group" aria-label="Frame selection">
+                                <input type="radio" class="btn-check" name="{{form.sequence_length.name}}" id="btn20" value="20" autocomplete="off">
+                                <label class="btn btn-glass frame-select" for="btn20">
+                                    <i class="fas fa-film me-2"></i>20 Frames
+                                </label>
+                                
+                                {% comment %} <input type="radio" class="btn-check" name="{{form.sequence_length.name}}" id="btn40" value="40" autocomplete="off">
+                                <label class="btn btn-glass frame-select" for="btn40">
+                                    <i class="fas fa-film me-2"></i>40 Frames
+                                </label> {% endcomment %}
+                            </div>
+                        </div>
+                        
+                        <button id="videoUpload" type="submit" name="submit" class="btn btn-glass w-100">
+                            <i class="fas fa-upload me-2"></i>Upload Video
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.bg {
+    transition: height 0.3s ease;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-file-upload {
+    text-align: center;
+}
+
+.file-upload-label {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.file-upload-label:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.file-upload-label input[type="file"] {
+    display: none;
+}
+
+.width-400 {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: transparent;
+}
+
+.btn-glass {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-check {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+
+.frame-select {
+    width: 50%;
+    border-radius: 8px;
+    margin: 0 4px;
+}
+
+.btn-check:checked + .frame-select {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.input-group-text {
+    background: transparent !important;
+    border: none;
+    color: white;
+}
+
+.transparent-input {
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+}
+
+.transparent-input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.transparent-input:focus {
+    box-shadow: none !important;
+}
+
+video {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Override any Bootstrap background colors */
+.form-control, .input-group-text {
+    background: transparent !important;
+}
+</style>
+
+{% endblock %}
+
+{% block js_cripts %}
+<script src="{% static 'js/script.js' %}"></script>
+<script>
+// File selection display
+document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+    var fileName = e.target.files[0] ? e.target.files[0].name : 'No file selected';
+    document.getElementById('file-name-display').textContent = fileName;
+    
+    // Create URL for video preview
+    if (e.target.files[0]) {
+        const video = document.getElementById('videos');
+        const file = e.target.files[0];
+        const url = URL.createObjectURL(file);
+        video.src = url;
+        
+        // Update background height when video metadata is loaded
+        video.addEventListener('loadedmetadata', function() {
+            updateBackgroundHeight();
+        });
+    }
+});
+
+// Function to update background height
+function updateBackgroundHeight() {
+    const container = document.querySelector('.container');
+    const bg = document.getElementById('dynamic-bg');
+    const containerHeight = container.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const newHeight = Math.max(containerHeight + 40, windowHeight); // Add padding
+    bg.style.height = newHeight + 'px';
+}
+
+// Update height on window resize
+window.addEventListener('resize', updateBackgroundHeight);
+
+
+document.addEventListener('DOMContentLoaded', updateBackgroundHeight);
+
+
+document.getElementById('video-upload').addEventListener('submit', function(e) {
+    const frame20 = document.getElementById('btn20');
+    const frame40 = document.getElementById('btn40');
+    
+    if (!frame20.checked && !frame40.checked) {
+        e.preventDefault();
+        alert('Please select number of frames (20 or 40)');
+    }
+});
+</script>
+{% endblock %}
