@@ -60,14 +60,11 @@ This project aims to address the growing threat of deepfake videos by developing
    ```bash
    pip install -r requirements.txt
    ```  
-3. Run the Jupyter Notebook for training:  
+3. Run the server:  
    ```bash
-   jupyter notebook
+   python manage.py runserver
    ```  
-4. Start the REST API server:  
-   ```bash
-   python app.py
-   ```
+
 ---
 
 ![Screenshot (622)](https://github.com/user-attachments/assets/6a7c7da5-a9ea-4bb9-a7db-63bbe3765da4)
