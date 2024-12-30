@@ -67,5 +67,22 @@ This project aims to address the growing threat of deepfake videos by developing
 4. Start the REST API server:  
    ```bash
    python app.py
-   ```  
+   ```
 ---
+
+![Screenshot (622)](https://github.com/user-attachments/assets/6a7c7da5-a9ea-4bb9-a7db-63bbe3765da4)
+
+---
+
+![Screenshot (625)](https://github.com/user-attachments/assets/1a00441e-187b-4af1-8b58-2adc47177146)
+
+---
+
+![Screenshot (624)](https://github.com/user-attachments/assets/3da739b9-f56d-49e3-b811-5c8d3e5393f9)
+
+---
+
+
+
+
+
